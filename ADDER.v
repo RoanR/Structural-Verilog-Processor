@@ -2,7 +2,7 @@
 module ADDER (input wire A,
              input wire B,
              input wire C_in,
-             output wire Y
+             output wire Y,
              output wire C_out);
 
 //for the Sum
