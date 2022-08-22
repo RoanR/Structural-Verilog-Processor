@@ -30,11 +30,17 @@ AND16TO1 gate_filter3(.A(ror), .B(ror_result), .Y(ror));
 
 //operations for RRC
 wire [15:0] rrc;
-wire rrc_result;
-RRC gate_rrc(.A(A), .Y(rrc));
+wire rrc_result; //control
+wire rrc_carry; //carry out 
+RRC gate_rrc(.A(A), .C_in(C_in) .Y(rrc), .C_out(rrc_carry));
 AND gate_and4(.A(op[1]), .B(op[0]), .Y(rrc_result));
 AND16TO1 gate_filter4(.A(rrc), .B(rrc_result), .C_in(C_in), .Y(rrc));
-//NOTE NEED TO SORT THE CARRY OUT FOR RRC 
+//carry calculations for RRC 
+wire carry_internal, carry_internal2, carry_internal3;
+NOT gate_not(.A(rrc_result), .Y(carry_internal));
+AND gate_and5(.A(C_in), .B(carry_internal), .Y(carry_internal2));
+AND gate_and6(.A(rrc_carry), .B(rrc_result), .Y(carry_internal3));
+OR gate_or4(.A(carry_internal2), .B(carry_internal3), .Y(C_out));
 
 wire [15:0] internal;
 wire [15:0] internal2;
